@@ -11,11 +11,11 @@
 
 #define KSCRIPT_VERSION_IDENT "prototype"
 
-#define KSCRIPT_VENDOR        "KrabbaTek"
-#define KSCRIPT_VENDOR_VERSION_MAJOR 1
-#define KSCRIPT_VENDOR_VERSION_MINOR 0
-#define KSCRIPT_VENDOR_VERSION_PATCH 0
+#ifndef KSCRIPT_VENDOR
 
+#define KSCRIPT_VENDOR        "None"
+
+#endif
 void printUsage();
 
 void usageInit();
