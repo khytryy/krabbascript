@@ -4,7 +4,8 @@
 #include <toml/tomlc17.h>
 #include <string.h>
 
-#include <unistd.h> 
+#include <unistd.h>
+#include <tokenizer/tokenizer.h>
 
 int main(int argc, char *argv[]) {
     (void)argv;
@@ -16,7 +17,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (strcmp(argv[1], "version") == 0) {
-        printf("KrabbaScript (kscript) %d.%d.%d-%s %s\n",
+        printf("KrabbaScript (kscript) %d.%d.%d-%s (%s)\n",
             KSCRIPT_VERSION_MAJOR,
             KSCRIPT_VERSION_MINOR,
             KSCRIPT_VERSION_PATCH,
@@ -24,6 +25,17 @@ int main(int argc, char *argv[]) {
             KSCRIPT_VENDOR);
 
         printf("Copyright © 2026 KrabbaTek Group\n");
+
+        return 0;
+    }
+
+    if (strcmp(argv[1], "t") == 0) {
+        char_vector_t *source_code = fileToCharVector("test.krs");
+
+        for (size_t i = 0; i < source_code->size; i++) {
+            printf("%c", charVectorPeek(source_code, i));
+        }
+        printf("\n");
 
         return 0;
     }

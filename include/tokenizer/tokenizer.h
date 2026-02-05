@@ -1,50 +1,11 @@
 #pragma once
 
-enum token_type {
-    // Types
-    KSCRIPT_TOKEN_TYPE_I64,
-    KSCRIPT_TOKEN_TYPE_I32,
-    KSCRIPT_TOKEN_TYPE_I16,
-    KSCRIPT_TOKEN_TYPE_I8,
+#include <vectors/vectors.h>
+#include <stdio.h>
 
-    KSCRIPT_TOKEN_TYPE_U64,
-    KSCRIPT_TOKEN_TYPE_U32,
-    KSCRIPT_TOKEN_TYPE_U16,
-    KSCRIPT_TOKEN_TYPE_U8,
+#include <stdlib.h>
+#include <ctype.h>
 
-    KSCRIPT_TOKEN_TYPE_F64,
-    KSCRIPT_TOKEN_TYPE_F32,
+char_vector_t       *fileToCharVector(const char *path);
 
-    KSCRIPT_TOKEN_TYPE_PTR,
-    KSCRIPT_TOKEN_TYPE_STR,
-    KSCRIPT_TOKEN_TYPE_BOOL,
-
-    // Compiler stuff,
-    KSCRIPT_TOKEN_TYPE_LITERAL,
-
-    // Keywords
-    KSCRIPT_TOKEN_TYPE_FUNCTION,
-    KSCRIPT_TOKEN_TYPE_VAR,
-    KSCRIPT_TOKEN_TYPE_VAL,
-    KSCRIPT_TOKEN_TYPE_IMPORT,
-    KSCRIPT_TOKEN_TYPE_FROM,
-    KSCRIPT_TOKEN_TYPE_MODULE,
-    KSCRIPT_TOKEN_TYPE_WHILE,
-    KSCRIPT_TOKEN_TYPE_TRUE,
-    KSCRIPT_TOKEN_TYPE_FALSE,
-    KSCRIPT_TOKEN_TYPE_FOR
-};
-
-struct {
-    enum token_type     type;
-
-    union {
-        int             i;
-        float           f;
-        double          d;
-
-        char            *s;
-    };
-} token;
-
-
+token_vector_t      *tokenize(char_vector_t *vector);

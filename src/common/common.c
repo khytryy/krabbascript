@@ -6,6 +6,7 @@ void printUsage() {
 
     printf("    init    <name>      Create a new Krabbascript project\n");
     printf("    build   <file|dir>  Build a project or a file\n");
+    printf("    version             Display the current compiler version\n");
 }
 
 void usageInit() {

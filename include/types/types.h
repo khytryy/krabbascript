@@ -1,0 +1,67 @@
+#pragma once
+
+#include <stddef.h>
+
+typedef enum {
+    // Types
+    KSCRIPT_TOKEN_TYPE_I64,
+    KSCRIPT_TOKEN_TYPE_I32,
+    KSCRIPT_TOKEN_TYPE_I16,
+    KSCRIPT_TOKEN_TYPE_I8,
+
+    KSCRIPT_TOKEN_TYPE_U64,
+    KSCRIPT_TOKEN_TYPE_U32,
+    KSCRIPT_TOKEN_TYPE_U16,
+    KSCRIPT_TOKEN_TYPE_U8,
+
+    KSCRIPT_TOKEN_TYPE_F64,
+    KSCRIPT_TOKEN_TYPE_F32,
+
+    KSCRIPT_TOKEN_TYPE_PTR,
+    KSCRIPT_TOKEN_TYPE_STR,
+    KSCRIPT_TOKEN_TYPE_BOOL,
+
+    // Compiler stuff,
+    KSCRIPT_TOKEN_TYPE_LITERAL,
+    KSCRIPT_TOKEN_TYPE_EOF,
+
+    // Keywords
+    KSCRIPT_TOKEN_TYPE_FUNCTION,
+    KSCRIPT_TOKEN_TYPE_VAR,
+    KSCRIPT_TOKEN_TYPE_VAL,
+    KSCRIPT_TOKEN_TYPE_IMPORT,
+    KSCRIPT_TOKEN_TYPE_FROM,
+    KSCRIPT_TOKEN_TYPE_MODULE,
+    KSCRIPT_TOKEN_TYPE_WHILE,
+    KSCRIPT_TOKEN_TYPE_TRUE,
+    KSCRIPT_TOKEN_TYPE_FALSE,
+    KSCRIPT_TOKEN_TYPE_FOR
+} token_type;
+
+typedef struct {
+    token_type      type;
+
+    union {
+        int             i;
+        float           f;
+        double          d;
+
+        char            *s;
+    };
+} token_t;
+
+typedef struct {
+     char     *data;
+
+     size_t   size;
+     size_t   capacity;
+
+} char_vector_t;
+
+typedef struct {
+     token_t    *data;
+
+     size_t   size;
+     size_t   capacity;
+
+} token_vector_t;
