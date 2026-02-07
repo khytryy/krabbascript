@@ -22,4 +22,8 @@ clean:
 	@echo "Cleaning up..."
 	@rm -rf $(OBJ_DIR) $(TARGET)
 
+install:
+	@echo "Installing..."
+	@cp kscript /usr/bin/kscript
+
 .PHONY: all clean

@@ -1,0 +1,7 @@
+var krabba: i32 = 5;
+
+krabba += 5;
+krabba -= 1;
+krabba *= 2;
+
+krabba /= 1;

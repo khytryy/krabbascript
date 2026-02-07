@@ -28,13 +28,12 @@ int main(int argc, char *argv[]) {
 
         return 0;
     }
-
-    if (strcmp(argv[1], "build") == 0) {
+    else if (strcmp(argv[1], "build") == 0) {
         if (argc < 3) {
             printf("\e[1;31mERROR\e[0m: No input file|directory\n");
             usageBuild();
 
-            return 64;
+            return 1;
         }
     
         int result = isFile(argv[2]);
@@ -44,21 +43,26 @@ int main(int argc, char *argv[]) {
             token_vector_t *tokens = tokenize(source, argv[2]);
             deTokenize(tokens);
 
-            if (errors_generated > 0) {
-                printf("\e[1;31m==== BUILD FAILED with %d %s ====\e[0m\n", errors_generated, 
-                    errors_generated == 1 ? "error" : "errors");
-
-                exit(1);
-            }
+            printErrorsGenerated();
         }
 
-        else if (result == DIRECTORY) {
-            printf("\e[1;31mERROR\e[0m: Building a directory is not implemented yet\n");
+        else if (result == KSCRIPT_DIRECTORY) {
+            errors_generated++;
+            printf("\e[1;31mNOT IMPLEMENTED ERROR\e[0m: Building a directory is not implemented yet\n");
+            
+            printErrorsGenerated();
         }
         else {
-            printf("\e[1;31mERROR\e[0m: No such file or directory \"%s\"\n", argv[2]);
+            errors_generated++;
+            printf("\e[1;31mOPENING ERROR\e[0m: No such file or directory \"%s\"\n", argv[2]);
+            printErrorsGenerated();
         }
 
+        return 0;
+    }
+    else if (strcmp(argv[1], "krabba") == 0) {
+        printKrabba();
+        printf("Krabba!\n");
         return 0;
     }
 
