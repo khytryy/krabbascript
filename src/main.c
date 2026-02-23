@@ -1,27 +1,21 @@
-#include <stdio.h>
 #include <common/common.h>
-
-#include <toml/tomlc17.h>
-#include <string.h>
-
-#include <unistd.h>
-#include <tokenizer/tokenizer.h>
-
 #include <parser/parser.h>
+#include <stdio.h>
+#include <string.h>
+#include <tokenizer/tokenizer.h>
+#include <toml/tomlc17.h>
+#include <unistd.h>
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
     (void)argv;
 
-    if (argc < 2)
-    {
+    if (argc < 2) {
         printUsage();
 
         return 0;
     }
 
-    if (strcmp(argv[1], "version") == 0)
-    {
+    if (strcmp(argv[1], "version") == 0) {
         printf("KrabbaScript (kscript) %d.%d.%d-%s (%s)\n",
                KSCRIPT_VERSION_MAJOR,
                KSCRIPT_VERSION_MINOR,
@@ -32,11 +26,8 @@ int main(int argc, char* argv[])
         printf("Copyright © 2026 KrabbaTek Group\n");
 
         return 0;
-    }
-    else if (strcmp(argv[1], "build") == 0)
-    {
-        if (argc < 3)
-        {
+    } else if (strcmp(argv[1], "build") == 0) {
+        if (argc < 3) {
             printf("\033[1;31mERROR\033[0m: No input file|directory\n");
             usageBuild();
 
@@ -44,8 +35,7 @@ int main(int argc, char* argv[])
         }
 
         int result = isFile(argv[2]);
-        if (result == KSCRIPT_FILE)
-        {
+        if (result == KSCRIPT_FILE) {
             char_vector_t* source = fileToCharVector(argv[2]);
 
             token_vector_t* tokens = tokenize(source, argv[2]);
@@ -57,16 +47,13 @@ int main(int argc, char* argv[])
             printErrorsGenerated();
         }
 
-        else if (result == KSCRIPT_DIRECTORY)
-        {
+        else if (result == KSCRIPT_DIRECTORY) {
             errors_generated++;
             printf("\033[1;31mNOT IMPLEMENTED ERROR\033[0m: Building a "
                    "directory is not implemented yet\n");
 
             printErrorsGenerated();
-        }
-        else
-        {
+        } else {
             errors_generated++;
             printf("\033[1;31mOPENING ERROR\033[0m: No such file or directory "
                    "\"%s\"\n",
@@ -75,9 +62,7 @@ int main(int argc, char* argv[])
         }
 
         return 0;
-    }
-    else if (strcmp(argv[1], "krabba") == 0)
-    {
+    } else if (strcmp(argv[1], "krabba") == 0) {
         printKrabba();
         printf("Krabba!\n");
         return 0;

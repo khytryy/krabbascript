@@ -3,22 +3,22 @@
 binding_power_t getBindingPower(token_type type) {
     switch (type) {
         case KSCRIPT_TOKEN_TYPE_OPEN_PAREN:
-            return (binding_power_t){ 1.0f, 1.1f };
+            return (binding_power_t){1.0f, 1.1f};
             break;
         case KSCRIPT_TOKEN_TYPE_CLOSED_PAREN:
-            return (binding_power_t){ 1.0f, 1.1f };
+            return (binding_power_t){1.0f, 1.1f};
             break;
         case KSCRIPT_TOKEN_TYPE_SBRACKET_OPEN:
-            return (binding_power_t){ 1.0f, 1.1f };
+            return (binding_power_t){1.0f, 1.1f};
             break;
         case KSCRIPT_TOKEN_TYPE_SBRACKET_CLOSED:
-            return (binding_power_t){ 1.0f, 1.1f };
+            return (binding_power_t){1.0f, 1.1f};
             break;
         case KSCRIPT_TOKEN_TYPE_DOT:
-            return (binding_power_t){ 1.0f, 1.1f };
+            return (binding_power_t){1.0f, 1.1f};
             break;
         case KSCRIPT_TOKEN_TYPE_ARROW:
-            return (binding_power_t){ 1.0f, 1.1f };
+            return (binding_power_t){1.0f, 1.1f};
             break;
         case KSCRIPT_TOKEN_TYPE_PLUS_PLUS:
             return (binding_power_t){1.0f, 1.1f};
@@ -32,12 +32,10 @@ binding_power_t getBindingPower(token_type type) {
     }
 }
 
-ast_node_t* tokenToNode(token_t token)
-{
+ast_node_t* tokenToNode(token_t token) {
     ast_node_t* node = newNode();
 
-    switch (token.type)
-    {
+    switch (token.type) {
         case KSCRIPT_TOKEN_TYPE_LITERAL:
             node->type   = KSCRIPT_AST_NODE_TYPE_LITERAL;
             node->lexeme = token.s;
@@ -111,22 +109,18 @@ ast_node_t* tokenToNode(token_t token)
 }
 
 ast_parent_t*
-astParseExpression(token_vector_t* tokens, size_t* index, float min_bp)
-{
+astParseExpression(token_vector_t* tokens, size_t* index, float min_bp) {
     ast_node_t* lhs = tokenToNode(tokenVectorPeek(tokens, *index));
     (*index)++;
 
-    while (true)
-    {
+    while (true) {
         token_t op = tokenVectorPeek(tokens, *index);
-        if (op.type == KSCRIPT_TOKEN_TYPE_EOF)
-            break;
+        if (op.type == KSCRIPT_TOKEN_TYPE_EOF) break;
 
         binding_power_t bp =
                 getBindingPower(tokenVectorPeek(tokens, *index).type);
 
-        if (bp.left < min_bp)
-            break;
+        if (bp.left < min_bp) break;
 
         (*index)++;
         ast_node_t* op_node = tokenToNode(op);
@@ -142,8 +136,7 @@ astParseExpression(token_vector_t* tokens, size_t* index, float min_bp)
     return lhs;
 }
 
-ast_parent_t astParseTokens(token_vector_t* tokens)
-{
+ast_parent_t astParseTokens(token_vector_t* tokens) {
     // TODO
     ast_parent_t parent = {0};
     (void)tokens;

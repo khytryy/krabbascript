@@ -1,11 +1,9 @@
 #include <tokenizer/tokenizer.h>
 
-char_vector_t* fileToCharVector(const char* path)
-{
+char_vector_t* fileToCharVector(const char* path) {
     FILE* file_ptr = fopen(path, "r");
 
-    if (file_ptr == NULL)
-    {
+    if (file_ptr == NULL) {
         perror("\033[1;31mERROR\033[0m: Failed to open file");
         exit(1);
     }
@@ -13,8 +11,7 @@ char_vector_t* fileToCharVector(const char* path)
     char_vector_t* vector = newCharVector();
 
     int c;
-    while ((c = fgetc(file_ptr)) != EOF)
-    {
+    while ((c = fgetc(file_ptr)) != EOF) {
         charVectorPush(vector, (char)c);
     }
 
@@ -22,18 +19,14 @@ char_vector_t* fileToCharVector(const char* path)
     return vector;
 }
 
-void deTokenize(token_vector_t* vector)
-{
-    for (size_t i = 0; i < vector->size; i++)
-    {
+void deTokenize(token_vector_t* vector) {
+    for (size_t i = 0; i < vector->size; i++) {
         deTokenizeToken(vector->data[i]);
     }
 }
 
-void deTokenizeToken(token_t token)
-{
-    switch (token.type)
-    {
+void deTokenizeToken(token_t token) {
+    switch (token.type) {
         case KSCRIPT_TOKEN_TYPE_I64:
             printf("i64 ");
             break;
@@ -250,10 +243,8 @@ void deTokenizeToken(token_t token)
     printf("\n");
 }
 
-void deTokenizeTokenKeyword(token_t token)
-{
-    switch (token.type)
-    {
+void deTokenizeTokenKeyword(token_t token) {
+    switch (token.type) {
         case KSCRIPT_TOKEN_TYPE_I64:
             printf("i64");
             break;
@@ -470,22 +461,18 @@ void deTokenizeTokenKeyword(token_t token)
     printf("\n");
 }
 
-token_vector_t* tokenize(char_vector_t* vector, const char* debug_path)
-{
+token_vector_t* tokenize(char_vector_t* vector, const char* debug_path) {
 
     char_vector_t*  buffer = newCharVector();
     token_vector_t* tokens = newTokenVector();
 
     int line = 1;
     int col  = 1;
-    for (size_t i = 0; i < vector->size; i++)
-    {
+    for (size_t i = 0; i < vector->size; i++) {
         char current = vector->data[i];
 
-        if (isdigit(current))
-        {
-            while (i < vector->size && isdigit(current))
-            {
+        if (isdigit(current)) {
+            while (i < vector->size && isdigit(current)) {
                 charVectorPush(buffer, current);
 
                 i++;
@@ -498,8 +485,7 @@ token_vector_t* tokenize(char_vector_t* vector, const char* debug_path)
 
             int value = atoi(buffer->data);
 
-            if (value == -1)
-            {
+            if (value == -1) {
                 errors_generated++;
 
                 printf("%s:%d:%d: \033[1;31mOVERFLOW ERROR\033[0m: Number is "
@@ -513,106 +499,74 @@ token_vector_t* tokenize(char_vector_t* vector, const char* debug_path)
             tokenVectorPush(tokens,
                             (token_t){.type = KSCRIPT_TOKEN_TYPE_INT_LITERAL,
                                       .i    = value});
-        }
-        else if (current == '(')
-        {
+        } else if (current == '(') {
             tokenVectorPush(tokens,
                             (token_t){.type = KSCRIPT_TOKEN_TYPE_OPEN_PAREN});
             col++;
-        }
-        else if (current == ')')
-        {
+        } else if (current == ')') {
             tokenVectorPush(tokens,
                             (token_t){.type = KSCRIPT_TOKEN_TYPE_CLOSED_PAREN});
             col++;
-        }
-        else if (current == ';')
-        {
+        } else if (current == ';') {
             tokenVectorPush(tokens,
                             (token_t){.type = KSCRIPT_TOKEN_TYPE_SEMICOLON});
             col++;
-        }
-        else if (current == '=')
-        {
-            if (i + 1 < vector->size && vector->data[i + 1] == '=')
-            {
+        } else if (current == '=') {
+            if (i + 1 < vector->size && vector->data[i + 1] == '=') {
                 tokenVectorPush(
                         tokens,
                         (token_t){.type = KSCRIPT_TOKEN_TYPE_EQUALS_EQUALS});
                 i++;
                 col += 2;
-            }
-            else
-            {
+            } else {
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_EQUALS});
                 col++;
             }
-        }
-        else if (current == '!')
-        {
+        } else if (current == '!') {
             tokenVectorPush(tokens,
                             (token_t){.type = KSCRIPT_TOKEN_TYPE_EXMARK});
             col++;
-        }
-        else if (current == '?')
-        {
+        } else if (current == '?') {
             tokenVectorPush(tokens,
                             (token_t){.type = KSCRIPT_TOKEN_TYPE_QMARK});
             col++;
-        }
-        else if (current == '.')
-        {
+        } else if (current == '.') {
             tokenVectorPush(tokens, (token_t){.type = KSCRIPT_TOKEN_TYPE_DOT});
             col++;
-        }
-        else if (current == ',')
-        {
+        } else if (current == ',') {
             tokenVectorPush(tokens,
                             (token_t){.type = KSCRIPT_TOKEN_TYPE_COMMA});
             col++;
-        }
-        else if (current == '{')
-        {
+        } else if (current == '{') {
             tokenVectorPush(tokens,
                             (token_t){
                                     .type = KSCRIPT_TOKEN_TYPE_CBRACKET_OPEN});
             col++;
-        }
-        else if (current == '}')
-        {
+        } else if (current == '}') {
             tokenVectorPush(
                     tokens,
                     (token_t){.type = KSCRIPT_TOKEN_TYPE_CBRACKET_CLOSED});
             col++;
-        }
-        else if (current == '<')
-        {
+        } else if (current == '<') {
             tokenVectorPush(tokens,
                             (token_t){.type = KSCRIPT_TOKEN_TYPE_LESS_THAN});
             col++;
-        }
-        else if (current == '>')
-        {
+        } else if (current == '>') {
             tokenVectorPush(tokens,
                             (token_t){.type = KSCRIPT_TOKEN_TYPE_MORE_THAN});
             col++;
-        }
-        else if (current == '"')
-        {
+        } else if (current == '"') {
             resetCharVector(buffer);
             i++;
             col++;
 
-            while (i < vector->size)
-            {
+            while (i < vector->size) {
                 current = vector->data[i];
 
-                if (current == '\\' && i + 1 < vector->size)
-                {
+                if (current == '\\' && i + 1 < vector->size) {
                     char next = vector->data[i + 1];
-                    if (next == '"')
-                    {
+                    if (next == '"') {
                         charVectorPush(buffer, '"');
                         i += 2;
                         col += 2;
@@ -620,16 +574,13 @@ token_vector_t* tokenize(char_vector_t* vector, const char* debug_path)
                     }
                 }
 
-                if (current == '"')
-                    break;
+                if (current == '"') break;
 
                 charVectorPush(buffer, current);
-                if (current == '\n')
-                {
+                if (current == '\n') {
                     line++;
                     col = 1;
-                }
-                else
+                } else
                     col++;
                 i++;
             }
@@ -640,155 +591,114 @@ token_vector_t* tokenize(char_vector_t* vector, const char* debug_path)
                                       .s    = strdup(buffer->data)});
 
             resetCharVector(buffer);
-        }
-        else if (current == '*')
-        {
-            if (i + 1 < vector->size && vector->data[i + 1] == '=')
-            {
+        } else if (current == '*') {
+            if (i + 1 < vector->size && vector->data[i + 1] == '=') {
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_MUL_EQ});
 
                 i++;
                 col += 2;
             }
-            if (i + 1 < vector->size && vector->data[i + 1] == '*')
-            {
+            if (i + 1 < vector->size && vector->data[i + 1] == '*') {
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_POWER_OF});
 
                 i++;
                 col += 2;
-            }
-            else
-            {
+            } else {
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_STAR});
                 col++;
             }
-        }
-        else if (current == '-')
-        {
+        } else if (current == '-') {
             // Handle ->
-            if (i + 1 < vector->size && vector->data[i + 1] == '>')
-            {
+            if (i + 1 < vector->size && vector->data[i + 1] == '>') {
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_ARROW});
                 i++;
                 col += 2;
             }
             // Handle -=
-            else if (i + 1 < vector->size && vector->data[i + 1] == '=')
-            {
+            else if (i + 1 < vector->size && vector->data[i + 1] == '=') {
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_MINUS_EQ});
                 i++;
                 col += 2;
             }
             // Handle --
-            else if (i + 1 < vector->size && vector->data[i + 1] == '-')
-            {
+            else if (i + 1 < vector->size && vector->data[i + 1] == '-') {
                 tokenVectorPush(
                         tokens,
                         (token_t){.type = KSCRIPT_TOKEN_TYPE_MINUS_MINUS});
                 i++;
                 col += 2;
-            }
-            else
-            {
+            } else {
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_MINUS});
                 col++;
             }
-        }
-        else if (current == '^')
-        {
+        } else if (current == '^') {
             tokenVectorPush(tokens,
                             (token_t){.type = KSCRIPT_TOKEN_TYPE_BWISE_XOR});
             col++;
-        }
-        else if (current == '|')
-        {
-            if (i + 1 < vector->size && vector->data[i + 1] == '|')
-            {
+        } else if (current == '|') {
+            if (i + 1 < vector->size && vector->data[i + 1] == '|') {
                 tokenVectorPush(tokens,
                                 (token_t){
                                         .type = KSCRIPT_TOKEN_TYPE_LOGICAL_OR});
                 i++;
                 col += 2;
-            }
-            else
-            {
+            } else {
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_BWISE_OR});
                 col++;
             }
-        }
-        else if (current == '&')
-        {
-            if (i + 1 < vector->size && vector->data[i + 1] == '&')
-            {
+        } else if (current == '&') {
+            if (i + 1 < vector->size && vector->data[i + 1] == '&') {
                 tokenVectorPush(
                         tokens,
                         (token_t){.type = KSCRIPT_TOKEN_TYPE_LOGICAL_AND});
                 i++;
                 col += 2;
-            }
-            else
-            {
+            } else {
                 tokenVectorPush(tokens,
                                 (token_t){
                                         .type = KSCRIPT_TOKEN_TYPE_BWISE_AND});
                 col++;
             }
-        }
-        else if (current == ':')
-        {
+        } else if (current == ':') {
             tokenVectorPush(tokens,
                             (token_t){.type = KSCRIPT_TOKEN_TYPE_COLON});
             col++;
-        }
-        else if (current == '[')
-        {
+        } else if (current == '[') {
             tokenVectorPush(tokens,
                             (token_t){
                                     .type = KSCRIPT_TOKEN_TYPE_SBRACKET_OPEN});
             col++;
-        }
-        else if (current == ']')
-        {
+        } else if (current == ']') {
             tokenVectorPush(
                     tokens,
                     (token_t){.type = KSCRIPT_TOKEN_TYPE_SBRACKET_CLOSED});
             col++;
-        }
-        else if (current == '/')
-        {
+        } else if (current == '/') {
             // Handle /=
-            if (i + 1 < vector->size && vector->data[i + 1] == '=')
-            {
+            if (i + 1 < vector->size && vector->data[i + 1] == '=') {
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_DIV_EQ});
                 i++;
 
                 col += 2;
-            }
-            else
-            {
+            } else {
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_SLASH});
                 col++;
             }
-        }
-        else if (current == '\\')
-        {
+        } else if (current == '\\') {
             tokenVectorPush(tokens,
                             (token_t){.type = KSCRIPT_TOKEN_TYPE_BSLASH});
             col++;
-        }
-        else if (current == '#')
-        {
-            while (i < vector->size && current != '\n')
-            {
+        } else if (current == '#') {
+            while (i < vector->size && current != '\n') {
                 i++;
                 col++;
                 ;
@@ -796,17 +706,13 @@ token_vector_t* tokenize(char_vector_t* vector, const char* debug_path)
                 current = vector->data[i];
             }
 
-            if (i < vector->size && vector->data[i] == '\n')
-            {
+            if (i < vector->size && vector->data[i] == '\n') {
                 line++;
                 col = 1;
             }
-        }
-        else if (current == '+')
-        {
+        } else if (current == '+') {
             // Handle +=
-            if (i + 1 < vector->size && vector->data[i + 1] == '=')
-            {
+            if (i + 1 < vector->size && vector->data[i + 1] == '=') {
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_PLUS_EQ});
 
@@ -814,26 +720,20 @@ token_vector_t* tokenize(char_vector_t* vector, const char* debug_path)
                 col += 2;
             }
             // Handle ++
-            if (i + 1 < vector->size && vector->data[i + 1] == '+')
-            {
+            if (i + 1 < vector->size && vector->data[i + 1] == '+') {
                 tokenVectorPush(tokens,
                                 (token_t){
                                         .type = KSCRIPT_TOKEN_TYPE_PLUS_PLUS});
 
                 i++;
                 col += 2;
-            }
-            else
-            {
+            } else {
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_PLUS});
                 col++;
             }
-        }
-        else if (isalnum(current))
-        {
-            while (i < vector->size && isalnum(current))
-            {
+        } else if (isalnum(current)) {
+            while (i < vector->size && isalnum(current)) {
                 charVectorPush(buffer, current);
 
                 i++;
@@ -843,191 +743,131 @@ token_vector_t* tokenize(char_vector_t* vector, const char* debug_path)
             charVectorPush(buffer, '\0');
             i--;
 
-            if (strcmp(buffer->data, "function") == 0)
-            {
+            if (strcmp(buffer->data, "function") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_FUNCTION});
-            }
-            else if (strcmp(buffer->data, "var") == 0)
-            {
+            } else if (strcmp(buffer->data, "var") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_VAR});
-            }
-            else if (strcmp(buffer->data, "val") == 0)
-            {
+            } else if (strcmp(buffer->data, "val") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_VAL});
-            }
-            else if (strcmp(buffer->data, "import") == 0)
-            {
+            } else if (strcmp(buffer->data, "import") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_IMPORT});
-            }
-            else if (strcmp(buffer->data, "from") == 0)
-            {
+            } else if (strcmp(buffer->data, "from") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_FROM});
-            }
-            else if (strcmp(buffer->data, "module") == 0)
-            {
+            } else if (strcmp(buffer->data, "module") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_MODULE});
-            }
-            else if (strcmp(buffer->data, "while") == 0)
-            {
+            } else if (strcmp(buffer->data, "while") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_WHILE});
-            }
-            else if (strcmp(buffer->data, "true") == 0)
-            {
+            } else if (strcmp(buffer->data, "true") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(
                         tokens,
                         (token_t){.type = KSCRIPT_TOKEN_TYPE_BOOL_LITERAL,
                                   .b    = true});
-            }
-            else if (strcmp(buffer->data, "false") == 0)
-            {
+            } else if (strcmp(buffer->data, "false") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(
                         tokens,
                         (token_t){.type = KSCRIPT_TOKEN_TYPE_BOOL_LITERAL,
                                   .b    = false});
-            }
-            else if (strcmp(buffer->data, "for") == 0)
-            {
+            } else if (strcmp(buffer->data, "for") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_FOR});
-            }
-            else if (strcmp(buffer->data, "i64") == 0)
-            {
+            } else if (strcmp(buffer->data, "i64") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_I64});
-            }
-            else if (strcmp(buffer->data, "i32") == 0)
-            {
+            } else if (strcmp(buffer->data, "i32") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_I32});
-            }
-            else if (strcmp(buffer->data, "i16") == 0)
-            {
+            } else if (strcmp(buffer->data, "i16") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_I16});
-            }
-            else if (strcmp(buffer->data, "i8") == 0)
-            {
+            } else if (strcmp(buffer->data, "i8") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_I8});
-            }
-            else if (strcmp(buffer->data, "u64") == 0)
-            {
+            } else if (strcmp(buffer->data, "u64") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_U64});
-            }
-            else if (strcmp(buffer->data, "u32") == 0)
-            {
+            } else if (strcmp(buffer->data, "u32") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_U32});
-            }
-            else if (strcmp(buffer->data, "u16") == 0)
-            {
+            } else if (strcmp(buffer->data, "u16") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_U16});
-            }
-            else if (strcmp(buffer->data, "u8") == 0)
-            {
+            } else if (strcmp(buffer->data, "u8") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_U8});
-            }
-            else if (strcmp(buffer->data, "f64") == 0)
-            {
+            } else if (strcmp(buffer->data, "f64") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_F64});
-            }
-            else if (strcmp(buffer->data, "f32") == 0)
-            {
+            } else if (strcmp(buffer->data, "f32") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_F32});
-            }
-            else if (strcmp(buffer->data, "ptr") == 0)
-            {
+            } else if (strcmp(buffer->data, "ptr") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_PTR});
-            }
-            else if (strcmp(buffer->data, "str") == 0)
-            {
+            } else if (strcmp(buffer->data, "str") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_STR});
-            }
-            else if (strcmp(buffer->data, "bool") == 0)
-            {
+            } else if (strcmp(buffer->data, "bool") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_BOOL});
-            }
-            else if (strcmp(buffer->data, "array") == 0)
-            {
+            } else if (strcmp(buffer->data, "array") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_ARRAY});
-            }
-            else if (strcmp(buffer->data, "if") == 0)
-            {
+            } else if (strcmp(buffer->data, "if") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_IF});
-            }
-            else if (strcmp(buffer->data, "elif") == 0)
-            {
+            } else if (strcmp(buffer->data, "elif") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_ELIF});
-            }
-            else if (strcmp(buffer->data, "else") == 0)
-            {
+            } else if (strcmp(buffer->data, "else") == 0) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_ELSE});
-            }
-            else
-            {
+            } else {
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_LITERAL,
                                           .s    = strdup(buffer->data)});
                 resetCharVector(buffer);
             }
-        }
-        else if (isspace(current))
-        {
-            if (current == '\n')
-            {
+        } else if (isspace(current)) {
+            if (current == '\n') {
                 line++;
                 col = 1;
             }
             continue;
-        }
-        else
-        {
+        } else {
             errors_generated++;
 
             printf("%s:%d:%d: \033[1;31mLEXICAL ERROR\033[0m: Unexpected "

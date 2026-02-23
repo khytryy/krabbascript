@@ -16,6 +16,8 @@ IndentPPDirectives: AfterHash
 
 # Braces and layout
 BreakBeforeBraces: Attach
+BraceWrapping:
+  BeforeElse: true
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: None
@@ -47,7 +49,7 @@ IncludeCategories:
     Priority: 1
   - Regex: '^".*"$'
     Priority: 2
-SortIncludes: false
+SortIncludes: true
 
 # Line breaking
 BreakConstructorInitializers: BeforeColon
