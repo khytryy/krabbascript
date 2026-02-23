@@ -2,16 +2,28 @@
 
 binding_power_t getBindingPower(token_type type) {
     switch (type) {
-        case KSCRIPT_TOKEN_TYPE_STAR:
-            return (binding_power_t){ 2.0f, 2.1f };
-            break;
-        case KSCRIPT_TOKEN_TYPE_SLASH:
-            return (binding_power_t){ 2.0f, 2.1f };
-            break;
-        case KSCRIPT_TOKEN_TYPE_PLUS:
+        case KSCRIPT_TOKEN_TYPE_OPEN_PAREN:
             return (binding_power_t){ 1.0f, 1.1f };
             break;
-        case KSCRIPT_TOKEN_TYPE_MINUS:
+        case KSCRIPT_TOKEN_TYPE_CLOSED_PAREN:
+            return (binding_power_t){ 1.0f, 1.1f };
+            break;
+        case KSCRIPT_TOKEN_TYPE_SBRACKET_OPEN:
+            return (binding_power_t){ 1.0f, 1.1f };
+            break;
+        case KSCRIPT_TOKEN_TYPE_SBRACKET_CLOSED:
+            return (binding_power_t){ 1.0f, 1.1f };
+            break;
+        case KSCRIPT_TOKEN_TYPE_DOT:
+            return (binding_power_t){ 1.0f, 1.1f };
+            break;
+        case KSCRIPT_TOKEN_TYPE_ARROW:
+            return (binding_power_t){ 1.0f, 1.1f };
+            break;
+        case KSCRIPT_TOKEN_TYPE_PLUS_PLUS:
+            return (binding_power_t){ 1.0f, 1.1f };
+            break;
+        case KSCRIPT_TOKEN_TYPE_MINUS_MINUS:
             return (binding_power_t){ 1.0f, 1.1f };
             break;
         default:
@@ -82,7 +94,7 @@ ast_node_t *tokenToNode(token_t token) {
             break;
         case KSCRIPT_TOKEN_TYPE_BWISE_XOR:
             node->type   = KSCRIPT_AST_NODE_TYPE_BWISE_XOR;
-            node->lexeme = "^"
+            node->lexeme = "^";
             break;
         default:
             errors_generated++;
