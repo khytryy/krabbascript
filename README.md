@@ -46,11 +46,7 @@ sudo cmake --install build
 
 This builds the binary in `build/` and copies the compiler to CMake's default install location under `bin/`.
 
-## License
-
-This project is under the GNU General Public License. For more information, see [`LICENSE.md`](./LICENSE.md).
-
-### Bundled dependencies
+### Libraries used
 
 - [easyargs](https://github.com/gouwsxander/easy-args), MIT License
 - [tomlc17](https://github.com/cktan/tomlc17), MIT License
