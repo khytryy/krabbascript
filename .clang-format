@@ -15,8 +15,8 @@ IndentGotoLabels: false
 IndentPPDirectives: AfterHash
 
 # Braces and layout
-BreakBeforeBraces: Allman
-AllowShortIfStatementsOnASingleLine: false
+BreakBeforeBraces: Attach
+AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: None
 AllowShortBlocksOnASingleLine: Never
