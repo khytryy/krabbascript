@@ -20,6 +20,12 @@ You can check if Git is installed with:
 git --version
 ```
 
+You can then clone the repo with
+
+```bash
+git clone https://github.com/khytryy/krabbascript
+```
+
 #### Make/CMake
 
 To build Krabbascript, you have to use GNU Make or compatible, or CMake.
