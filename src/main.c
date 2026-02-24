@@ -66,6 +66,9 @@ int main(int argc, char* argv[]) {
         printKrabba();
         printf("Krabba!\n");
         return 0;
+    } else if (strcmp(argv[1], "help") == 0) {
+        printUsage();
+        return 0;
     }
 
     printf("\033[1;31mERROR\033[0m: Unknown command \"%s\"\n", argv[1]);
