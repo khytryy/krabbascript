@@ -1,4 +1,6 @@
 # Krabbascript 2.3.3-prototype
+![GitHub License](https://img.shields.io/github/license/khytryy/krabbascript)
+![GitHub top language](https://img.shields.io/github/languages/top/khytryy/krabbascript?logo=c&label=)
 
 Krabbascript is a statically typed, AOT compiled, high level programming language designed to be easy to write and read.
 
