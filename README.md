@@ -54,6 +54,5 @@ This builds the binary in `build/` and copies the compiler to CMake's default in
 
 ### Libraries used
 
-- [easyargs](https://github.com/gouwsxander/easy-args), MIT License
 - [tomlc17](https://github.com/cktan/tomlc17), MIT License
 
