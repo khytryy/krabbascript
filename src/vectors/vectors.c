@@ -3,6 +3,11 @@
 char_vector_t* newCharVector() {
     char_vector_t* vec = (char_vector_t*)malloc(sizeof(char_vector_t));
 
+    if (!vec) {
+        printf("\033[1;31mALLOCATION ERRO\033[0m: Failed to allocate memory for a char_vector\n");
+        exit(1);
+    }
+
     vec->data = NULL;
 
     vec->size     = 0;
@@ -25,6 +30,19 @@ char_vector_t* charVectorFromString(const char* string) {
 
 void resetCharVector(char_vector_t* vector) {
     vector->size = 0;
+}
+
+void freeCharVector(char_vector_t* vector) {
+    if (!vector) return;
+
+    if (!vector->data) {
+        free(vector);
+        return;
+    }
+    else {
+        free(vector->data);
+        free(vector);
+    }
 }
 
 void charVectorPush(char_vector_t* vector, char val) {
@@ -104,6 +122,19 @@ token_t tokenVectorPeek(token_vector_t* vector, size_t index) {
     return vector->data[index];
 }
 
+void freeTokenVector(token_vector_t* vector) {
+    if (!vector) return;
+
+    if (!vector->data) {
+        free(vector);
+        return;
+    }
+    else {
+        free(vector->data);
+        free(vector);
+    }
+}
+
 ast_node_t* newNode() {
     ast_node_t* node = (ast_node_t*)malloc(sizeof(ast_node_t));
 
@@ -111,4 +142,14 @@ ast_node_t* newNode() {
     node->right = NULL;
 
     return node;
+}
+
+void freeNode(ast_node_t* node) {
+    if (!node) return;
+    if (node->lexeme && node->lexeme_owned) free(node->lexeme);
+
+    freeNode(node->left);
+    freeNode(node->right);
+
+    free(node);
 }

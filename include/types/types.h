@@ -115,6 +115,7 @@ typedef struct
         char* s;
         bool  b;
     };
+
 } token_t;
 
 typedef struct
@@ -176,6 +177,8 @@ typedef struct ast_node_t
     struct ast_node_t* right;
 
     char* lexeme;
+    bool  lexeme_owned;
+
     int   line;
     int   col;
 } ast_node_t;

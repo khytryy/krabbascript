@@ -7,8 +7,6 @@
 #include <unistd.h>
 
 int main(int argc, char* argv[]) {
-    (void)argv;
-
     if (argc < 2) {
         printUsage();
 
@@ -42,7 +40,10 @@ int main(int argc, char* argv[]) {
             deTokenize(tokens);
 
             size_t index = 0;
-            astParseExpression(tokens, &index, 0.0f);
+            ast_parent_t* exp = astParseExpression(tokens, &index, 0.0f);
+            
+            freeTokenVector(tokens);
+            freeNode(exp);
 
             printErrorsGenerated();
         }
@@ -74,5 +75,5 @@ int main(int argc, char* argv[]) {
     printf("\033[1;31mERROR\033[0m: Unknown command \"%s\"\n", argv[1]);
     printUsage();
 
-    return 64;
+    return 1;
 }

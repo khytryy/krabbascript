@@ -880,5 +880,8 @@ token_vector_t* tokenize(char_vector_t* vector, const char* debug_path) {
     }
     tokenVectorPush(tokens, (token_t){.type = KSCRIPT_TOKEN_TYPE_EOF});
 
+    freeCharVector(buffer);
+    freeCharVector(vector);
+
     return tokens;
 }
