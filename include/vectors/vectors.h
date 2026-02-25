@@ -24,3 +24,11 @@ void    freeTokenVector(token_vector_t* vector);
 
 ast_node_t* newNode();
 void        freeNode(ast_node_t* node);
+
+symbol_table_t* newSymbolTable();
+void            freeSymbolTable(symbol_table_t* table);
+
+void symbolTablePush(symbol_table_t* table, st_entry_t entry);
+st_entry_t symbolTablePop(symbol_table_t* table);
+
+st_entry_t symbolTablePeek(symbol_table_t* table, size_t index);

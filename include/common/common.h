@@ -13,7 +13,7 @@
 #define KSCRIPT_VERSION_MINOR 4
 #define KSCRIPT_VERSION_PATCH 3
 
-#define KSCRIPT_VERSION_IDENT "prototype"
+#define KSCRIPT_VERSION_IDENT "pre-alpha"
 
 #ifndef KSCRIPT_VENDOR
 

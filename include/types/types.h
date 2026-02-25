@@ -186,7 +186,8 @@ typedef struct {
 } binding_power_t;
 
 typedef enum {
-    KSCRIPT_ST_ENTRY_TYPE_INT
+    KSCRIPT_ST_ENTRY_TYPE_INT,
+    KSCRIPT_ST_ENTRY_TYPE_EOF
 
 } st_entry_type_t;
 

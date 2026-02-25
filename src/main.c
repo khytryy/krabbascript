@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     }
 
     if (strcmp(argv[1], "version") == 0) {
-        printf("KrabbaScript (kscript) %d.%d.%d-%s (%s)\n",
+        printf("Krabbascript (kscript) %d.%d.%d-%s (%s)\n",
                KSCRIPT_VERSION_MAJOR,
                KSCRIPT_VERSION_MINOR,
                KSCRIPT_VERSION_PATCH,

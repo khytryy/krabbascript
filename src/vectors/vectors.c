@@ -152,3 +152,62 @@ void freeNode(ast_node_t* node) {
 
     free(node);
 }
+
+symbol_table_t* newSymbolTable() {
+    symbol_table_t* t = (symbol_table_t*)malloc(sizeof(symbol_table_t));
+
+    t->entries = NULL;
+
+    t->size     = 0;
+    t->capacity = 0;
+
+    return t;
+}
+
+void freeSymbolTable(symbol_table_t* table) {
+    if (!table) return;
+
+    if (!table->entries) {
+        free(table);
+        return;
+    } else {
+        free(table->entries);
+        free(table);
+
+        return;
+    }
+}
+
+void symbolTablePush(symbol_table_t* table, st_entry_t entry) {
+    if (table->entries == NULL) {
+        table->entries = (st_entry_t*)malloc(sizeof(st_entry_t));
+
+        table->capacity = 1;
+    } else if (table->size >= table->capacity) {
+        table->capacity *= 2;
+        table->entries = (st_entry_t*)realloc(table->entries,
+                                         sizeof(st_entry_t) * table->capacity);
+    }
+
+    table->entries[table->size] = entry;
+    table->size++;
+}
+
+st_entry_t symbolTablePop(symbol_table_t* table) {
+    if (table->size > 0) {
+        st_entry_t t = table->entries[table->size - 1];
+
+        table->size--;
+        return t;
+    }
+
+    return (st_entry_t){.type = KSCRIPT_ST_ENTRY_TYPE_EOF};
+}
+
+st_entry_t symbolTablePeek(symbol_table_t* table, size_t index) {
+    if (index > table->size) {
+        return (st_entry_t){.type = KSCRIPT_ST_ENTRY_TYPE_EOF};
+    }
+
+    return table->entries[index];
+}
