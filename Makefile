@@ -6,6 +6,7 @@ OBJ_DIR := obj
 TARGET  := kscript
 
 SRCS    := $(shell find $(SRC_DIR) -name "*.c")
+INC     := $(shell find include -name "*.h")
 OBJS    := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 DEPS    := $(OBJS:.o=.d)
 
@@ -30,7 +31,7 @@ install:
 
 format:
 	@echo "Formatting code..."
-	@clang-format -i $(SRCS)
+	@clang-format -i $(SRCS) $(INC)
 
 .PHONY: all clean install format
 

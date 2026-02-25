@@ -25,8 +25,7 @@
 #    define TOML_EXTERN extern
 #endif
 
-enum toml_type_t
-{
+enum toml_type_t {
     TOML_UNKNOWN = 0,
     TOML_STRING,
     TOML_INT64,
@@ -45,35 +44,29 @@ typedef enum toml_type_t toml_type_t;
  * at toml_result_t::toptab.
  */
 typedef struct toml_datum_t toml_datum_t;
-struct toml_datum_t
-{
+struct toml_datum_t {
     toml_type_t type;
     uint32_t    flag; // internal
-    union
-    {
+    union {
         const char* s; // same as str.ptr; use if there are no NUL in string.
-        struct
-        {
+        struct {
             const char* ptr; // NUL terminated string
             int         len; // length excluding the terminating NUL.
         } str;
         int64_t int64; // integer
         double  fp64;  // float
         bool    boolean;
-        struct
-        { // date, time
+        struct { // date, time
             int16_t year, month, day;
             int16_t hour, minute, second;
             int32_t usec;
             int16_t tz; // in minutes
         } ts;
-        struct
-        {                       // array
+        struct {                // array
             int32_t       size; // count elem
             toml_datum_t* elem; // elem[]
         } arr;
-        struct
-        {                        // table
+        struct {                 // table
             int32_t       size;  // count key
             const char**  key;   // key[]
             int*          len;   // len[]
@@ -84,8 +77,7 @@ struct toml_datum_t
 
 /* Result returned by toml_parse() */
 typedef struct toml_result_t toml_result_t;
-struct toml_result_t
-{
+struct toml_result_t {
     bool         ok;          // success flag
     toml_datum_t toptab;      // valid if ok
     char         errmsg[200]; // valid if not ok
@@ -141,8 +133,8 @@ TOML_EXTERN toml_datum_t toml_seek(toml_datum_t table,
  * Find a key in a toml_table. Return the value of the key if found,
  * or a TOML_UNKNOWN otherwise. (
  */
-static inline toml_datum_t toml_table_find(toml_datum_t table, const char* key)
-{
+static inline toml_datum_t toml_table_find(toml_datum_t table,
+                                           const char*  key) {
     return toml_get(table, key);
 }
 
@@ -176,8 +168,7 @@ TOML_EXTERN bool toml_equiv(const toml_result_t* r1, const toml_result_t* r2);
 
 /* Options that override tomlc17 defaults globally */
 typedef struct toml_option_t toml_option_t;
-struct toml_option_t
-{
+struct toml_option_t {
     bool check_utf8; // Check all chars are valid utf8; default: false.
     void* (*mem_realloc)(void* ptr, size_t size); // default: realloc()
     void (*mem_free)(void* ptr);                  // default: free()

@@ -1,10 +1,9 @@
 #pragma once
 
-#include <types/types.h>
-#include <stdlib.h>
-
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <types/types.h>
 
 char_vector_t* newCharVector();
 char_vector_t* charVectorFromString(const char* string);
@@ -20,8 +19,8 @@ token_vector_t* newTokenVector();
 void            tokenVectorPush(token_vector_t* vector, token_t val);
 token_t         tokenVectorPop(token_vector_t* vector);
 
-token_t         tokenVectorPeek(token_vector_t* vector, size_t index);
-void            freeTokenVector(token_vector_t* vector);
+token_t tokenVectorPeek(token_vector_t* vector, size_t index);
+void    freeTokenVector(token_vector_t* vector);
 
 ast_node_t* newNode();
-void freeNode(ast_node_t* node);
+void        freeNode(ast_node_t* node);

@@ -39,9 +39,9 @@ int main(int argc, char* argv[]) {
             token_vector_t* tokens = tokenize(source, argv[2]);
             deTokenize(tokens);
 
-            size_t index = 0;
-            ast_parent_t* exp = astParseExpression(tokens, &index, 0.0f);
-            
+            size_t        index = 0;
+            expression_t* exp   = astParseExpression(tokens, &index, 0.0f);
+
             freeTokenVector(tokens);
             freeNode(exp);
 

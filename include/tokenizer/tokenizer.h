@@ -1,13 +1,11 @@
 #pragma once
 
-#include <vectors/vectors.h>
-#include <stdio.h>
-
-#include <stdlib.h>
-#include <ctype.h>
-
-#include <string.h>
 #include <common/common.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <vectors/vectors.h>
 
 char_vector_t* fileToCharVector(const char* path);
 

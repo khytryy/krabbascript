@@ -1,10 +1,9 @@
 #pragma once
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 
-typedef enum
-{
+typedef enum {
     // Types
     KSCRIPT_TOKEN_TYPE_I64,
     KSCRIPT_TOKEN_TYPE_I32,
@@ -102,12 +101,10 @@ typedef enum
 
 } token_type;
 
-typedef struct
-{
+typedef struct {
     token_type type;
 
-    union
-    {
+    union {
         int    i;
         float  f;
         double d;
@@ -118,8 +115,7 @@ typedef struct
 
 } token_t;
 
-typedef struct
-{
+typedef struct {
     char* data;
 
     size_t size;
@@ -127,8 +123,7 @@ typedef struct
 
 } char_vector_t;
 
-typedef struct
-{
+typedef struct {
     token_t* data;
 
     size_t size;
@@ -136,8 +131,7 @@ typedef struct
 
 } token_vector_t;
 
-typedef enum
-{
+typedef enum {
     // Arithmetic operators
     KSCRIPT_AST_NODE_TYPE_DIV,
     KSCRIPT_AST_NODE_TYPE_MUL,
@@ -169,8 +163,7 @@ typedef enum
     KSCRIPT_AST_NODE_TYPE_EOF
 } ast_node_type;
 
-typedef struct ast_node_t
-{
+typedef struct ast_node_t {
     ast_node_type type;
 
     struct ast_node_t* left;
@@ -179,15 +172,41 @@ typedef struct ast_node_t
     char* lexeme;
     bool  lexeme_owned;
 
-    int   line;
-    int   col;
+    int line;
+    int col;
 } ast_node_t;
 
 typedef ast_node_t ast_parent_t;
+typedef ast_node_t expression_t;
 
-typedef struct
-{
+typedef struct {
     float left;
     float right;
 
 } binding_power_t;
+
+typedef enum {
+    KSCRIPT_ST_ENTRY_TYPE_INT
+
+} st_entry_type_t;
+
+typedef enum {
+    KSCRIPT_ENTRY_SCOPE_GLOBAL
+
+} st_entry_scope_t;
+
+typedef struct {
+    char* symbol;
+    bool  symbol_owned;
+
+    st_entry_type_t  type;
+    st_entry_scope_t scope;
+} st_entry_t;
+
+typedef struct {
+    st_entry_t* entries;
+
+    size_t size;
+    size_t capacity;
+
+} symbol_table_t;

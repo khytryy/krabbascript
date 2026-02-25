@@ -1,17 +1,16 @@
 #pragma once
 
-#include <stdio.h>
-#include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
-
+#include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
 
 #define KSCRIPT_DIRECTORY 0
 #define KSCRIPT_FILE 1
 
 #define KSCRIPT_VERSION_MAJOR 2
-#define KSCRIPT_VERSION_MINOR 3
+#define KSCRIPT_VERSION_MINOR 4
 #define KSCRIPT_VERSION_PATCH 3
 
 #define KSCRIPT_VERSION_IDENT "prototype"

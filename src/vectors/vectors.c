@@ -4,7 +4,8 @@ char_vector_t* newCharVector() {
     char_vector_t* vec = (char_vector_t*)malloc(sizeof(char_vector_t));
 
     if (!vec) {
-        printf("\033[1;31mALLOCATION ERRO\033[0m: Failed to allocate memory for a char_vector\n");
+        printf("\033[1;31mALLOCATION ERRO\033[0m: Failed to allocate memory "
+               "for a char_vector\n");
         exit(1);
     }
 
@@ -38,8 +39,7 @@ void freeCharVector(char_vector_t* vector) {
     if (!vector->data) {
         free(vector);
         return;
-    }
-    else {
+    } else {
         free(vector->data);
         free(vector);
     }
@@ -128,8 +128,7 @@ void freeTokenVector(token_vector_t* vector) {
     if (!vector->data) {
         free(vector);
         return;
-    }
-    else {
+    } else {
         free(vector->data);
         free(vector);
     }

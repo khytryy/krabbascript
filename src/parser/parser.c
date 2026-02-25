@@ -37,104 +37,104 @@ ast_node_t* tokenToNode(token_t token) {
 
     switch (token.type) {
         case KSCRIPT_TOKEN_TYPE_LITERAL:
-            node->type   = KSCRIPT_AST_NODE_TYPE_LITERAL;
-            node->lexeme = strdup(token.s);
+            node->type         = KSCRIPT_AST_NODE_TYPE_LITERAL;
+            node->lexeme       = strdup(token.s);
             node->lexeme_owned = true;
 
             break;
         case KSCRIPT_TOKEN_TYPE_BOOL_LITERAL:
-            node->type   = KSCRIPT_AST_NODE_TYPE_BOOL_LITERAL;
+            node->type = KSCRIPT_AST_NODE_TYPE_BOOL_LITERAL;
 
-            node->lexeme = token.b == true ? "true" : "false";
+            node->lexeme       = token.b == true ? "true" : "false";
             node->lexeme_owned = false;
 
             break;
         case KSCRIPT_TOKEN_TYPE_STR_LITERAL:
-            node->type   = KSCRIPT_AST_NODE_TYPE_STR_LITERAL;
+            node->type = KSCRIPT_AST_NODE_TYPE_STR_LITERAL;
 
-            node->lexeme = strdup(token.s);
+            node->lexeme       = strdup(token.s);
             node->lexeme_owned = true;
 
             break;
         case KSCRIPT_TOKEN_TYPE_INT_LITERAL:
             node->type = KSCRIPT_AST_NODE_TYPE_INT_LITERAL;
-            
-            char buffer[32];
-            int len = snprintf(buffer, sizeof(buffer), "%d", token.i);
 
-            node->lexeme = malloc(len + 1);
+            char buffer[32];
+            int  len = snprintf(buffer, sizeof(buffer), "%d", token.i);
+
+            node->lexeme       = malloc(len + 1);
             node->lexeme_owned = true;
 
             memcpy(node->lexeme, buffer, len + 1);
 
             break;
         case KSCRIPT_TOKEN_TYPE_EOF:
-            node->type = KSCRIPT_AST_NODE_TYPE_EOF;
+            node->type         = KSCRIPT_AST_NODE_TYPE_EOF;
             node->lexeme_owned = false;
 
             break;
         case KSCRIPT_TOKEN_TYPE_PLUS:
-            node->type   = KSCRIPT_AST_NODE_TYPE_PLUS;
+            node->type = KSCRIPT_AST_NODE_TYPE_PLUS;
 
-            node->lexeme = "+";
+            node->lexeme       = "+";
             node->lexeme_owned = false;
 
             break;
         case KSCRIPT_TOKEN_TYPE_MINUS:
-            node->type   = KSCRIPT_AST_NODE_TYPE_MINUS;
+            node->type = KSCRIPT_AST_NODE_TYPE_MINUS;
 
-            node->lexeme = "-";
+            node->lexeme       = "-";
             node->lexeme_owned = false;
 
             break;
         case KSCRIPT_TOKEN_TYPE_STAR:
-            node->type   = KSCRIPT_AST_NODE_TYPE_MUL;
+            node->type = KSCRIPT_AST_NODE_TYPE_MUL;
 
-            node->lexeme = "*";
+            node->lexeme       = "*";
             node->lexeme_owned = false;
 
             break;
         case KSCRIPT_TOKEN_TYPE_SLASH:
-            node->type   = KSCRIPT_AST_NODE_TYPE_DIV;
+            node->type = KSCRIPT_AST_NODE_TYPE_DIV;
 
-            node->lexeme = "/";
+            node->lexeme       = "/";
             node->lexeme_owned = false;
 
             break;
         case KSCRIPT_TOKEN_TYPE_LOGICAL_AND:
-            node->type   = KSCRIPT_AST_NODE_TYPE_LOGICAL_AND;
+            node->type = KSCRIPT_AST_NODE_TYPE_LOGICAL_AND;
 
-            node->lexeme = "&&";
+            node->lexeme       = "&&";
             node->lexeme_owned = false;
 
             break;
         case KSCRIPT_TOKEN_TYPE_LOGICAL_OR:
-            node->type   = KSCRIPT_AST_NODE_TYPE_LOGICAL_OR;
+            node->type = KSCRIPT_AST_NODE_TYPE_LOGICAL_OR;
 
-            node->lexeme = "||";
+            node->lexeme       = "||";
             node->lexeme_owned = false;
 
             break;
         case KSCRIPT_TOKEN_TYPE_BWISE_AND:
-            node->type   = KSCRIPT_AST_NODE_TYPE_BWISE_AND;
+            node->type = KSCRIPT_AST_NODE_TYPE_BWISE_AND;
 
-            node->lexeme = "&";
+            node->lexeme       = "&";
             node->lexeme_owned = false;
 
             break;
         case KSCRIPT_TOKEN_TYPE_BWISE_OR:
-            node->type   = KSCRIPT_AST_NODE_TYPE_BWISE_OR;
+            node->type = KSCRIPT_AST_NODE_TYPE_BWISE_OR;
 
-            node->lexeme = "|";
+            node->lexeme       = "|";
             node->lexeme_owned = false;
 
             break;
         case KSCRIPT_TOKEN_TYPE_BWISE_XOR:
-            node->type   = KSCRIPT_AST_NODE_TYPE_BWISE_XOR;
+            node->type = KSCRIPT_AST_NODE_TYPE_BWISE_XOR;
 
-            node->lexeme = "^";
+            node->lexeme       = "^";
             node->lexeme_owned = false;
-            
+
             break;
         default:
             errors_generated++;
@@ -149,7 +149,7 @@ ast_node_t* tokenToNode(token_t token) {
     return node;
 }
 
-ast_parent_t*
+expression_t*
 astParseExpression(token_vector_t* tokens, size_t* index, float min_bp) {
     ast_node_t* lhs = tokenToNode(tokenVectorPeek(tokens, *index));
     (*index)++;
@@ -182,4 +182,12 @@ ast_parent_t astParseTokens(token_vector_t* tokens) {
     (void)tokens;
 
     return parent;
+}
+
+symbol_table_t* createSymbolTableFromTokens(token_vector_t* tokens) {
+    (void)tokens;
+    symbol_table_t* t = {0};
+
+    // TODO
+    return t;
 }
