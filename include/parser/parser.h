@@ -13,3 +13,7 @@ astParseExpression(token_vector_t* tokens, size_t* index, float min_bp);
 ast_parent_t astParseTokens(token_vector_t* tokens);
 
 symbol_table_t* createSymbolTableFromTokens(token_vector_t* tokens);
+
+void parserHandleVal(token_vector_t* tokens,
+                     ast_parent_t*   nodes,
+                     size_t*         index);

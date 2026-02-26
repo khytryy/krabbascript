@@ -22,13 +22,15 @@ token_t         tokenVectorPop(token_vector_t* vector);
 token_t tokenVectorPeek(token_vector_t* vector, size_t index);
 void    freeTokenVector(token_vector_t* vector);
 
+bool tokenVectorEof(token_vector_t* vector, size_t index);
+
 ast_node_t* newNode();
 void        freeNode(ast_node_t* node);
 
 symbol_table_t* newSymbolTable();
 void            freeSymbolTable(symbol_table_t* table);
 
-void symbolTablePush(symbol_table_t* table, st_entry_t entry);
+void       symbolTablePush(symbol_table_t* table, st_entry_t entry);
 st_entry_t symbolTablePop(symbol_table_t* table);
 
 st_entry_t symbolTablePeek(symbol_table_t* table, size_t index);

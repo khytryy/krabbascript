@@ -1,5 +1,5 @@
 CC      := gcc
-CFLAGS  := -Wall -Wextra -Werror -g -O2 -I include -DKSCRIPT_VENDOR=\"KrabbaTek\" -MMD -MP
+CFLAGS  := -Wall -Wextra  -g -O2 -I include -DKSCRIPT_VENDOR=\"KrabbaTek\" -MMD -MP
 
 SRC_DIR := src
 OBJ_DIR := obj

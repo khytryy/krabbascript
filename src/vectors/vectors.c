@@ -134,6 +134,14 @@ void freeTokenVector(token_vector_t* vector) {
     }
 }
 
+bool tokenVectorEof(token_vector_t* vector, size_t index) {
+    if (tokenVectorPeek(vector, index).type == KSCRIPT_TOKEN_TYPE_EOF) {
+        return true;
+    }
+
+    return false;
+}
+
 ast_node_t* newNode() {
     ast_node_t* node = (ast_node_t*)malloc(sizeof(ast_node_t));
 
@@ -185,8 +193,9 @@ void symbolTablePush(symbol_table_t* table, st_entry_t entry) {
         table->capacity = 1;
     } else if (table->size >= table->capacity) {
         table->capacity *= 2;
-        table->entries = (st_entry_t*)realloc(table->entries,
-                                         sizeof(st_entry_t) * table->capacity);
+        table->entries =
+                (st_entry_t*)realloc(table->entries,
+                                     sizeof(st_entry_t) * table->capacity);
     }
 
     table->entries[table->size] = entry;
