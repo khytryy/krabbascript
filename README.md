@@ -1,4 +1,4 @@
-# Krabbascript 2.3.3-prototype
+# Krabbascript 2.5.3-prototype
 ![GitHub License](https://img.shields.io/github/license/khytryy/krabbascript)
 ![GitHub top language](https://img.shields.io/github/languages/top/khytryy/krabbascript?logo=c&label=)
 
