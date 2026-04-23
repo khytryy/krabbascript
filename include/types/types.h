@@ -46,6 +46,7 @@ typedef enum {
     KSCRIPT_TOKEN_TYPE_TRUE,
     KSCRIPT_TOKEN_TYPE_FALSE,
     KSCRIPT_TOKEN_TYPE_FOR,
+    KSCRIPT_TOKEN_TYPE_PUB,
 
     // Symbols
     KSCRIPT_TOKEN_TYPE_OPEN_PAREN,
@@ -81,10 +82,16 @@ typedef enum {
     KSCRIPT_TOKEN_TYPE_ELIF,
     KSCRIPT_TOKEN_TYPE_ELSE,
 
+    KSCRIPT_TOKEN_TYPE_RETURN,
+
     KSCRIPT_TOKEN_TYPE_PLUS_EQ,
     KSCRIPT_TOKEN_TYPE_MINUS_EQ,
     KSCRIPT_TOKEN_TYPE_MUL_EQ,
     KSCRIPT_TOKEN_TYPE_DIV_EQ,
+
+    KSCRIPT_TOKEN_TYPE_NOT_EQU,
+    KSCRIPT_TOKEN_TYPE_GREATER_EQU,
+    KSCRIPT_TOKEN_TYPE_LESS_EQU,
 
     KSCRIPT_TOKEN_TYPE_PLUS_PLUS,
     KSCRIPT_TOKEN_TYPE_MINUS_MINUS,
@@ -101,6 +108,7 @@ typedef enum {
 
 } token_type;
 
+// TODO: Add line and col to token_t
 typedef struct {
     token_type type;
 
@@ -112,6 +120,9 @@ typedef struct {
         char* s;
         bool  b;
     };
+
+    int line;
+    int col;
 
 } token_t;
 
@@ -130,6 +141,8 @@ typedef struct {
     size_t capacity;
 
 } token_vector_t;
+
+// TODO: Add PTR and BOOL types
 
 typedef enum {
     // Arithmetic operators
@@ -159,6 +172,23 @@ typedef enum {
     KSCRIPT_AST_NODE_TYPE_STR_LITERAL,
     KSCRIPT_AST_NODE_TYPE_INT_LITERAL,
 
+    KSCRIPT_AST_NODE_TYPE_STR_TYPE,
+    KSCRIPT_AST_NODE_TYPE_PTR_TYPE,
+    KSCRIPT_AST_NODE_TYPE_BOOL_TYPE,
+
+    KSCRIPT_AST_NODE_TYPE_I64_TYPE,
+    KSCRIPT_AST_NODE_TYPE_I32_TYPE,
+    KSCRIPT_AST_NODE_TYPE_I16_TYPE,
+    KSCRIPT_AST_NODE_TYPE_I8_TYPE,
+
+    KSCRIPT_AST_NODE_TYPE_U64_TYPE,
+    KSCRIPT_AST_NODE_TYPE_U32_TYPE,
+    KSCRIPT_AST_NODE_TYPE_U16_TYPE,
+    KSCRIPT_AST_NODE_TYPE_U8_TYPE,
+
+    KSCRIPT_AST_NODE_TYPE_F64_TYPE,
+    KSCRIPT_AST_NODE_TYPE_F32_TYPE,
+
     KSCRIPT_AST_NODE_TYPE_NONE,
     KSCRIPT_AST_NODE_TYPE_EOF
 } ast_node_type;
@@ -186,7 +216,7 @@ typedef struct {
 } binding_power_t;
 
 typedef enum {
-    KSCRIPT_ST_ENTRY_TYPE_INT,
+    KSCRIPT_ST_ENTRY_TYPE_I64,
     KSCRIPT_ST_ENTRY_TYPE_EOF
 
 } st_entry_type_t;

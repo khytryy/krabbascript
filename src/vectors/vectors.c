@@ -115,7 +115,7 @@ token_t tokenVectorPop(token_vector_t* vector) {
 }
 
 token_t tokenVectorPeek(token_vector_t* vector, size_t index) {
-    if (index > vector->size) {
+    if (index >= vector->size) {
         return (token_t){.type = KSCRIPT_TOKEN_TYPE_EOF};
     }
 
