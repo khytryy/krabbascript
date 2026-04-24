@@ -27,6 +27,7 @@ typedef enum {
     // Compiler stuff,
     KSCRIPT_TOKEN_TYPE_LITERAL,
     KSCRIPT_TOKEN_TYPE_INT_LITERAL,
+    KSCRIPT_TOKEN_TYPE_FLOAT_LITERAL,
     KSCRIPT_TOKEN_TYPE_STR_LITERAL,
     KSCRIPT_TOKEN_TYPE_BOOL_LITERAL,
     KSCRIPT_TOKEN_TYPE_NONE,
@@ -192,7 +193,12 @@ typedef enum {
     KSCRIPT_AST_NODE_TYPE_OPEN_PAREN,
     KSCRIPT_AST_NODE_TYPE_CLOSED_PAREN,
 
+    KSCRIPT_AST_NODE_TYPE_IMPORT,
+
+    KSCRIPT_AST_NODE_TYPE_FLOAT_LITERAL,
+
     KSCRIPT_AST_NODE_TYPE_NONE,
+    KSCRIPT_AST_NODE_TYPE_PROGRAM,
     KSCRIPT_AST_NODE_TYPE_EOF
 } ast_node_type;
 
@@ -207,6 +213,16 @@ typedef struct ast_node_t {
 
     int line;
     int col;
+
+    union {
+        struct {
+            struct ast_node_t** body;
+
+            size_t size;
+            size_t capacity;
+        } block;
+    };
+
 } ast_node_t;
 
 typedef ast_node_t ast_parent_t;

@@ -1,1 +1,4 @@
-val result: i64 = (3 + 4) * 2 - 1;
+val epicValue = "Krabba!"; # The compiler will not let you change a val's value unless its a var
+var daysWithoutSegFault = 0;
+
+val temp = 36.6f

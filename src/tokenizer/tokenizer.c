@@ -73,6 +73,9 @@ void deTokenizeToken(token_t token) {
         case KSCRIPT_TOKEN_TYPE_INT_LITERAL:
             printf("Int literal: %d ", token.i);
             break;
+        case KSCRIPT_TOKEN_TYPE_FLOAT_LITERAL:
+            printf("Float literal: %f", token.d);
+            break;
         case KSCRIPT_TOKEN_TYPE_STR_LITERAL:
             printf("String literal: \"%s\" ", token.s);
             break;
@@ -317,6 +320,9 @@ void deTokenizeTokenKeyword(token_t token) {
         case KSCRIPT_TOKEN_TYPE_BOOL_LITERAL:
             printf("%s", token.b == true ? "true" : "false");
             break;
+        case KSCRIPT_TOKEN_TYPE_FLOAT_LITERAL:
+            printf("%f", token.d);
+            break;
 
         case KSCRIPT_TOKEN_TYPE_FUNCTION:
             printf("function");
@@ -507,27 +513,72 @@ token_vector_t* tokenize(char_vector_t* vector, const char* debug_path) {
                 current = vector->data[i];
             }
 
-            charVectorPush(buffer, '\0');
-            i--;
+            if (i < vector->size && current == '.') {
+                charVectorPush(buffer, '.');
+                i++;
+                col++;
+                current = vector->data[i];
 
-            int value = atoi(buffer->data);
+                while (i < vector->size && isdigit(current)) {
+                    charVectorPush(buffer, current);
 
-            if (value == -1) {
-                errors_generated++;
+                    i++;
+                    col++;
+                    current = vector->data[i];
+                }
 
-                printf("%s:%d:%d: \033[1;31mOVERFLOW ERROR\033[0m: Number is "
-                       "too large\n",
-                       debug_path,
-                       line,
-                       col);
+                if (i < vector->size && current == 'f') {
+                    i++;
+                    col++;
+                    current = vector->data[i];
+                }
+
+                charVectorPush(buffer, '\0');
+                i--;
+
+                errno        = 0;
+                double value = strtod(buffer->data, NULL);
+                if (errno == ERANGE) {
+                    errors_generated++;
+                    printf("%s:%d:%d: \033[1;31mOVERFLOW ERROR\033[0m: Float "
+                           "literal is "
+                           "too large\n",
+                           debug_path,
+                           line,
+                           col);
+                }
+
+                resetCharVector(buffer);
+                tokenVectorPush(
+                        tokens,
+                        (token_t){.type = KSCRIPT_TOKEN_TYPE_FLOAT_LITERAL,
+                                  .d    = value,
+                                  .line = line,
+                                  .col  = col});
+            } else {
+                // Integer path
+                charVectorPush(buffer, '\0');
+                i--;
+
+                errno      = 0;
+                long value = strtol(buffer->data, NULL, 10);
+                if (errno == ERANGE || value > INT_MAX || value < INT_MIN) {
+                    errors_generated++;
+                    printf("%s:%d:%d: \033[1;31mOVERFLOW ERROR\033[0m: Integer "
+                           "literal is "
+                           "too large\n",
+                           debug_path,
+                           line,
+                           col);
+                }
+
+                resetCharVector(buffer);
+                tokenVectorPush(tokens,
+                                (token_t){.type = KSCRIPT_TOKEN_TYPE_INT_LITERAL,
+                                          .i    = (int)value,
+                                          .line = line,
+                                          .col  = col});
             }
-            resetCharVector(buffer);
-
-            tokenVectorPush(tokens,
-                            (token_t){.type = KSCRIPT_TOKEN_TYPE_INT_LITERAL,
-                                      .i    = value,
-                                      .line = line,
-                                      .col  = col});
         } else if (current == '(') {
             tokenVectorPush(tokens,
                             (token_t){.type = KSCRIPT_TOKEN_TYPE_OPEN_PAREN,

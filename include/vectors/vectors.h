@@ -34,3 +34,9 @@ void       symbolTablePush(symbol_table_t* table, st_entry_t entry);
 st_entry_t symbolTablePop(symbol_table_t* table);
 
 st_entry_t symbolTablePeek(symbol_table_t* table, size_t index);
+
+void newNodeBlock(ast_node_t* node);
+void freeNodeBlock(ast_node_t* node);
+
+void        nodeBlockPush(ast_node_t* node, ast_node_t* child);
+ast_node_t* nodeBlockPop(ast_node_t* node);

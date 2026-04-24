@@ -17,7 +17,11 @@ symbol_table_t* createSymbolTableFromTokens(token_vector_t* tokens);
 ast_parent_t*
 parserHandleVal(token_vector_t* tokens, size_t* index, char* source_file);
 
-bool parserIsType(token_t token);
+ast_parent_t*
+parserHandleVar(token_vector_t* tokens, size_t* index, char* source_file);
+
+ast_parent_t*
+parserHandleFrom(token_vector_t* tokens, size_t* index, char* source_file);
 
 void parserPrintNodeType(ast_node_t* node);
-void parserDumpNode(ast_parent_t* parent, int depth);
+void parserDumpNode(ast_parent_t* parent, size_t depth);

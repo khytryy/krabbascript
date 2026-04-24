@@ -220,3 +220,49 @@ st_entry_t symbolTablePeek(symbol_table_t* table, size_t index) {
 
     return table->entries[index];
 }
+
+void newNodeBlock(ast_node_t* node) {
+    node->block.body = NULL;
+
+    node->block.size     = 0;
+    node->block.capacity = 0;
+}
+
+void freeNodeBlock(ast_node_t* node) {
+    if (!node->block.body) return;
+
+    for (size_t i = 0; i < node->block.size; i++) {
+        freeNode(node->block.body[i]);
+    }
+
+    free(node->block.body);
+
+    node->block.body     = NULL;
+    node->block.size     = 0;
+    node->block.capacity = 0;
+}
+
+void nodeBlockPush(ast_node_t* node, ast_node_t* child) {
+    if (node->block.body == NULL) {
+        node->block.body     = (ast_node_t**)malloc(sizeof(ast_node_t*));
+        node->block.capacity = 1;
+    } else if (node->block.size >= node->block.capacity) {
+        node->block.capacity *= 2;
+        node->block.body = (ast_node_t**)realloc(node->block.body,
+                                                 sizeof(ast_node_t*) *
+                                                         node->block.capacity);
+    }
+
+    node->block.body[node->block.size] = child;
+    node->block.size++;
+}
+
+ast_node_t* nodeBlockPop(ast_node_t* node) {
+    if (node->block.size > 0) {
+        ast_node_t* child = node->block.body[node->block.size - 1];
+        node->block.size--;
+        return child;
+    }
+
+    return NULL;
+}
