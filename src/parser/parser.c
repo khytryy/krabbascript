@@ -2,12 +2,6 @@
 
 binding_power_t getBindingPower(token_type type) {
     switch (type) {
-        case KSCRIPT_TOKEN_TYPE_OPEN_PAREN:
-            return (binding_power_t){1.0f, 1.1f};
-            break;
-        case KSCRIPT_TOKEN_TYPE_CLOSED_PAREN:
-            return (binding_power_t){1.0f, 1.1f};
-            break;
         case KSCRIPT_TOKEN_TYPE_SBRACKET_OPEN:
             return (binding_power_t){1.0f, 1.1f};
             break;
@@ -49,6 +43,18 @@ binding_power_t getBindingPower(token_type type) {
             break;
         case KSCRIPT_TOKEN_TYPE_LOGICAL_OR:
             return (binding_power_t){5.0f, 5.1f};
+            break;
+        case KSCRIPT_TOKEN_TYPE_PLUS:
+            return (binding_power_t){20.0f, 20.1f};
+            break;
+        case KSCRIPT_TOKEN_TYPE_MINUS:
+            return (binding_power_t){20.0f, 20.1f};
+            break;
+        case KSCRIPT_TOKEN_TYPE_STAR:
+            return (binding_power_t){30.0f, 30.1f};
+            break;
+        case KSCRIPT_TOKEN_TYPE_SLASH:
+            return (binding_power_t){30.0f, 30.1f};
             break;
         default:
             return (binding_power_t){0.0f, 0.0f};
@@ -267,6 +273,22 @@ ast_node_t* tokenToNode(token_t token) {
 
             break;
 
+        case KSCRIPT_TOKEN_TYPE_OPEN_PAREN:
+            node->type = KSCRIPT_AST_NODE_TYPE_OPEN_PAREN;
+
+            node->lexeme       = "(";
+            node->lexeme_owned = false;
+
+            break;
+
+        case KSCRIPT_TOKEN_TYPE_CLOSED_PAREN:
+            node->type = KSCRIPT_AST_NODE_TYPE_CLOSED_PAREN;
+
+            node->lexeme       = ")";
+            node->lexeme_owned = false;
+
+            break;
+
         default:
             errors_generated++;
             printf("\033[1;31mERROR\033[0m: Unexpected token ");
@@ -282,12 +304,27 @@ ast_node_t* tokenToNode(token_t token) {
 
 expression_t*
 astParseExpression(token_vector_t* tokens, size_t* index, float min_bp) {
-    ast_node_t* lhs = tokenToNode(tokenVectorPeek(tokens, *index));
-    (*index)++;
+    ast_node_t* lhs;
+
+    if (tokenVectorPeek(tokens, *index).type == KSCRIPT_TOKEN_TYPE_OPEN_PAREN) {
+        // Consume (
+        (*index)++;
+        lhs = astParseExpression(tokens, index, 0.0f);
+
+        // Consume ) if it even exists
+        if (tokenVectorPeek(tokens, *index).type == KSCRIPT_TOKEN_TYPE_CLOSED_PAREN) {
+            (*index)++;
+        }
+    } else {
+        lhs = tokenToNode(tokenVectorPeek(tokens, *index));
+        (*index)++;
+    }
 
     while (true) {
         token_t op = tokenVectorPeek(tokens, *index);
+
         if (op.type == KSCRIPT_TOKEN_TYPE_EOF) break;
+        if (op.type == KSCRIPT_TOKEN_TYPE_CLOSED_PAREN) break;
 
         binding_power_t bp =
                 getBindingPower(tokenVectorPeek(tokens, *index).type);
@@ -678,7 +715,12 @@ void parserPrintNodeType(ast_node_t* node) {
         case KSCRIPT_AST_NODE_TYPE_F32_TYPE:
             printf("f32");
             break;
-
+        case KSCRIPT_AST_NODE_TYPE_OPEN_PAREN:
+            printf("OpenParentheses");
+            break;
+        case KSCRIPT_AST_NODE_TYPE_CLOSED_PAREN:
+            printf("ClosedParentheses");
+            break;
         case KSCRIPT_AST_NODE_TYPE_NONE:
             printf("None");
             break;
