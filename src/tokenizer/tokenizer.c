@@ -527,12 +527,6 @@ token_vector_t* tokenize(char_vector_t* vector, const char* debug_path) {
                     current = vector->data[i];
                 }
 
-                if (i < vector->size && current == 'f') {
-                    i++;
-                    col++;
-                    current = vector->data[i];
-                }
-
                 charVectorPush(buffer, '\0');
                 i--;
 
@@ -556,13 +550,13 @@ token_vector_t* tokenize(char_vector_t* vector, const char* debug_path) {
                                   .line = line,
                                   .col  = col});
             } else {
-                // Integer path
+                // Not a float
                 charVectorPush(buffer, '\0');
                 i--;
 
                 errno      = 0;
-                long value = strtol(buffer->data, NULL, 10);
-                if (errno == ERANGE || value > INT_MAX || value < INT_MIN) {
+                long v     = strtol(buffer->data, NULL, 10);
+                if (errno == ERANGE || v > INT_MAX || v < INT_MIN) {
                     errors_generated++;
                     printf("%s:%d:%d: \033[1;31mOVERFLOW ERROR\033[0m: Integer "
                            "literal is "
@@ -575,7 +569,7 @@ token_vector_t* tokenize(char_vector_t* vector, const char* debug_path) {
                 resetCharVector(buffer);
                 tokenVectorPush(tokens,
                                 (token_t){.type = KSCRIPT_TOKEN_TYPE_INT_LITERAL,
-                                          .i    = (int)value,
+                                          .i    = (int)v,
                                           .line = line,
                                           .col  = col});
             }
@@ -923,8 +917,8 @@ token_vector_t* tokenize(char_vector_t* vector, const char* debug_path) {
                                           .col  = col});
                 col++;
             }
-        } else if (isalnum(current)) {
-            while (i < vector->size && isalnum(current)) {
+        } else if (isalnum(current) || current == '_') {
+            while ((i < vector->size && isalnum(current)) || current == '_') {
                 charVectorPush(buffer, current);
 
                 i++;

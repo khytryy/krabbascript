@@ -977,19 +977,19 @@ void parserDumpNode(ast_parent_t* parent, size_t depth) {
     if (parent->line != 0) {
         for (size_t i = 0; i < depth; i++)
             printf("    ");
-        printf("    - line: %d\n", parent->line);
+        printf("    - Line: %d\n", parent->line);
     }
 
     if (parent->line != 0) {
         for (size_t i = 0; i < depth; i++)
             printf("    ");
-        printf("    - col: %d\n", parent->col);
+        printf("    - Column: %d\n", parent->col);
     }
 
     if (parent->lexeme) {
         for (size_t i = 0; i < depth; i++)
             printf("    ");
-        printf("    - lexeme: %s\n", parent->lexeme);
+        printf("    - Lexeme: \"%s\"\n", parent->lexeme);
     }
 
     parserDumpNode(parent->left, depth + 1);
