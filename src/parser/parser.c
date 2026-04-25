@@ -986,7 +986,7 @@ void parserDumpNode(ast_parent_t* parent, size_t depth) {
         printf("    - Column: %d\n", parent->col);
     }
 
-    if (parent->lexeme) {
+    if (parent->lexeme && strcmp(parent->lexeme, "") != 0) {
         for (size_t i = 0; i < depth; i++)
             printf("    ");
         printf("    - Lexeme: \"%s\"\n", parent->lexeme);
