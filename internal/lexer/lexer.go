@@ -87,7 +87,7 @@ func newKeywords() map[string]TokenType {
 		"when":   TokenWhen,
 		"struct": TokenStruct,
 		"import": TokenImport,
-		"do":	  TokenDo,
+		"do":     TokenDo,
 
 		// Types
 		"I64":  TokenI64,
@@ -233,6 +233,15 @@ func (l *Lexer) Scan() []Token {
 				l.buffer.Reset()
 			}
 		} else if unicode.IsSpace(rune(c)) { // Covers \n, \t, spaces, etc
+			if c == '\n' {
+				tok := Token{
+					Line:   l.line,
+					Column: l.column,
+					Type:   TokenEol,
+				}
+
+				toks = append(toks, tok)
+			}
 			l.consume()
 		} else if c == '#' {
 			for {

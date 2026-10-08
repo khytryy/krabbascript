@@ -103,6 +103,7 @@ const (
 
 	TokenNone
 	TokenEof
+	TokenEol
 )
 
 func (tt TokenType) String() string {
@@ -124,7 +125,7 @@ func (tt TokenType) String() string {
 		TokenWhen:   "when",
 		TokenStruct: "struct",
 		TokenImport: "import",
-		TokenDo:	 "do",
+		TokenDo:     "do",
 
 		// Types
 		TokenBool: "Bool",
@@ -185,6 +186,7 @@ func (tt TokenType) String() string {
 		TokenFloatLiteral: "float literal",
 		TokenNone:         "none",
 		TokenEof:          "eof",
+		TokenEol:          "eol",
 	}
 
 	if int(tt) >= 0 && int(tt) < len(tokens) {

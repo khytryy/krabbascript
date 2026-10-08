@@ -901,9 +901,10 @@ func (p *Parser) trimListInit(s *TokenStream) ([]TokenStream, error) {
 
 			continue
 		}
-		if t.Type == lexer.TokenOpenBrack {
+		switch t.Type {
+		case lexer.TokenOpenBrack:
 			depth++
-		} else if t.Type == lexer.TokenClosedBrack {
+		case lexer.TokenClosedBrack:
 			depth--
 			if depth < 0 {
 				return nil, fmt.Errorf("%s:%d:%d: unexpected closing bracket", p.file, t.Line, t.Column)
@@ -1114,6 +1115,8 @@ loop:
 			}
 
 			p.appendToBlock(ast, n)
+		case lexer.TokenEol:
+			p.consumeToks(s) // Skip the newline
 		case lexer.TokenStruct:
 			n, err := p.parseStructToks(s)
 			if err != nil {
