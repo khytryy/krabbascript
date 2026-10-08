@@ -41,6 +41,7 @@ const (
 
 	TokenAny
 	TokenArr
+	TokenDo
 
 	// Symbols
 	TokenPlus
@@ -123,6 +124,7 @@ func (tt TokenType) String() string {
 		TokenWhen:   "when",
 		TokenStruct: "struct",
 		TokenImport: "import",
+		TokenDo:	 "do",
 
 		// Types
 		TokenBool: "Bool",
